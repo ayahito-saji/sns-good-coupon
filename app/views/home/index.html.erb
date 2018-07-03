@@ -1,2 +1,19 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div id="user_nav">
+  <% if current_user %>
+      <%= current_user.name %>さん <%= link_to "ログアウト" ,logout_path %>
+  <% else %>
+      <%= link_to "Twitterでlogin","/auth/twitter" %>
+  <% end %>
+</div>
+
+<% if @client %>
+  <% @client.user_timeline(count: 3000, tweet_mode: "extended" ).each do |tweet| %>
+    <p>
+      <%= tweet.attrs[:full_text] %><br/>
+      <%= tweet.favorite_count %>
+      <%= tweet.retweet_count %><br/>
+      <%= tweet.retweet? ? "リツイートです": "リツイートではありません" %>
+      <%= tweet.reply? ? "リプライです": "リプライではありません" %>
+    </p>
+  <% end %>
+<% end %>

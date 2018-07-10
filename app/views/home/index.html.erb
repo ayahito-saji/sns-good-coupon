@@ -21,7 +21,7 @@
         </tr>
           <% @tweets_data.each do |tweet| %>
               <tr>
-                <td><%= raw(tweet[:text].gsub!(@match_data) {|word| "<span class='bg-success'>#{word}</span>" }) %></td>
+                <td><%= !tweet[:find_word?] ? tweet[:text] : raw(tweet[:text].gsub!(@match_data) {|word| "<span class='bg-success'>#{word}</span>" }) %></td>
                 <td><%= tweet[:favorite_count] %></td>
                 <td><%= tweet[:retweet_count] %></td>
               </tr>

@@ -19,11 +19,12 @@ class HomeController < ApplicationController
           puts "find word #{tweet.attrs[:full_text].scan(@match_data)}"
           if tweet_data[:retweet?] == false && tweet_data[:find_word?] == true
             @favorite_total += tweet_data[:favorite_count]
-            @tweets_data << tweet_data
           end
+
+          @tweets_data << tweet_data
         end
         @coupon_text = "スタジアム観戦無料"
-        @url_code = "https://sns-good-coupon.herokuapp.com/coupon-auth?id={#{0}}&p=#{SecureRandom.base58}"
+        @url_code = "https://sns-good-coupon.herokuapp.com/coupon-auth?id=#{0}&p=#{SecureRandom.base58}"
       end
     end
   end

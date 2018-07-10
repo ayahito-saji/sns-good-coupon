@@ -1,25 +1,36 @@
 <% if current_user %>
     <div class="container">
-      <div class="jumbotron">
-        <h1><small>クーポン</small>「スタジアム観戦無料」<small>をGET!!!</small></h1>
+      <div class="jumbotron text-center">
+        <h1><small>クーポン</small>「<%= @coupon_text %>」<small>をGET!!!</small></h1>
+        <h3>いいね総数「<%= @favorite_total %>」</h3>
+        <h2>下のQRコードをお店の人に見せて特典GET!</h2>
+        <div>
+          <div id="qrcode"></div>
+          <%= @url_code %>
+        </div>
+        <div class="text-danger">
+          このQRコードをお店のスタッフの方に見せて、認証してクーポンを受け取ってください。<br>
+          一度認証されたクーポンは利用できません。<br>
+        </div>
       </div>
-      <% if @client %>
-          <% @client.user_timeline(count: 3000, tweet_mode: "extended" ).each do |tweet| %>
-              <p>
-                <label>本文</label>
-                <%= tweet.attrs[:full_text] %><br/>
-                <label>いいね数</label>
-                <%= tweet.favorite_count %>
-                <label>リツイート数</label>
-                <%= tweet.retweet_count %><br/>
-                <label>引用ツイートか？</label>
-                <%= tweet.retweet? ? "リツイートです": "リツイートではありません" %>
-                <label>返信か？</label>
-                <%= tweet.reply? ? "リプライです": "リプライではありません" %>
-              </p>
+      <table class="table table-striped">
+        <tr>
+          <th></th>
+          <th>いいね</th>
+          <th>リツイート</th>
+        </tr>
+          <% @tweets_data.each do |tweet| %>
+              <tr>
+                <td><%= raw(tweet[:text].gsub!(@match_data) {|word| "<span class='bg-success'>#{word}</span>" }) %></td>
+                <td><%= tweet[:favorite_count] %></td>
+                <td><%= tweet[:retweet_count] %></td>
+              </tr>
           <% end %>
-      <% end %>
+      </table>
     </div>
+    <script>
+        $('#qrcode').qrcode("<%= @url_code %>");
+    </script>
 <% else %>
     <div class="container">
       <div class="jumbotron">

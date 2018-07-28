@@ -1,24 +1,27 @@
 <% if current_user %>
-    <div class="container">
-      <div class="jumbotron text-center">
-        <h1><small>クーポン</small>「<%= @coupon_text %>」<small>をGET!!!</small></h1>
-        <h3>いいね総数「<%= @favorite_total %>」</h3>
-        <h2>下のQRコードをお店の人に見せて特典GET!</h2>
-        <div>
-          <div id="qrcode"></div>
-          <%= @url_code %>
-        </div>
-        <div class="text-danger">
-          このQRコードをお店のスタッフの方に見せて、認証してクーポンを受け取ってください。<br>
-          一度認証されたクーポンは利用できません。<br>
+      <div class="jumbotron text-center ">
+        <div class="container">
+          <h1><small>クーポン</small>「<%= @coupon_text %>」<small>をGET!!!</small></h1>
+          <h3>いいね総数「<%= @favorite_total %>」</h3>
+          <h2>下のQRコードをお店の人に見せて特典GET!</h2>
+          <div>
+            <div id="qrcode"></div>
+            <%= @url_code %>
+          </div>
+          <div class="text-danger">
+            このQRコードをお店のスタッフの方に見せて、認証してクーポンを受け取ってください。<br>
+            一度認証されたクーポンは利用できません。<br>
+          </div>
         </div>
       </div>
-      <table class="table table-striped">
-        <tr>
-          <th></th>
-          <th>いいね</th>
-          <th>リツイート</th>
-        </tr>
+    <div class="container">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tr>
+            <th></th>
+            <th>いいね</th>
+            <th>リツイート</th>
+          </tr>
           <% @tweets_data.each do |tweet| %>
               <tr>
                 <td><%= !tweet[:find_word?] ? tweet[:text] : raw(tweet[:text].gsub!(@match_data) {|word| "<span class='bg-success'>#{word}</span>" }) %></td>
@@ -26,17 +29,35 @@
                 <td><%= tweet[:retweet_count] %></td>
               </tr>
           <% end %>
-      </table>
+        </table>
+      </div>
     </div>
     <script>
         $('#qrcode').qrcode("<%= @url_code %>");
     </script>
 <% else %>
-    <div class="container">
-      <div class="jumbotron">
-        <h1>いいねクーポン</h1>
-        <p>つぶやきについた「いいね」でクーポンをもらおう!</p>
+    <div class="container text-center">
+      <div style="padding-top: 100px;padding-bottom: 100px;">
+        <%= image_tag('logo.png') %>
+        <h3>つぶやきについた「いいね」でクーポンをもらおう!</h3>
         <p><%= link_to "Twitterでログイン","/auth/twitter", class: "btn btn-primary btn-lg" %></p>
+      </div>
+      <div class="row" style="padding-bottom: 100px;">
+        <div class="col-sm-4 text-center">
+          <i class="fas fa-users text-primary" style="font-size: 5em;"></i>
+          <h3>誰もが広告者</h3>
+          <p>だれかが発言していても，話題にならない．<br/>だれもが発言していたら，話題になる．</p>
+        </div>
+        <div class="col-sm-4 text-center">
+          <i class="fas fa-comments text-primary" style="font-size: 5em;"></i>
+          <h3>つぶやくだけ</h3>
+          <p>つぶやいて，いいねをGETするだけで，<br/>クーポンを受け取る権利があなたの手に．<br/>あとは，お店で見せるだけ．</p>
+        </div>
+        <div class="col-sm-4 text-center">
+          <i class="fas fa-shopping-cart text-primary" style="font-size: 5em;"></i>
+          <h3>クーポンはお店で</h3>
+          <p>クーポンはネット上でGETできません．<br/>リアルな店舗で受け取る仕組みなので，<br/>お店もリピーターを増やせる！</p>
+        </div>
       </div>
     </div>
 <% end %>
